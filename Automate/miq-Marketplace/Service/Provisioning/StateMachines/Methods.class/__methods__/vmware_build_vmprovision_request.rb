@@ -101,6 +101,14 @@ def parsed_dialog_information
     dialog_parser_error if dialog_options_hash.blank? && dialog_tags_hash.blank?
   end
 
+  # VMware network names have |'s in them here.  Swap |'s to 3 underscores.
+
+  dialog_options_hash.each do |k,v|
+    if ! dialog_options_hash[k][:network].nil?
+      dialog_options_hash[k][:network] = dialog_options_hash[k][:network].gsub('|', '___')
+    end
+  end
+
   log_and_update_message(:info, "dialog_options: #{dialog_options_hash.inspect}")
   log_and_update_message(:info, "tag_options: #{dialog_tags_hash.inspect}")
   return dialog_options_hash, dialog_tags_hash
@@ -240,13 +248,16 @@ def get_flavor(build, merged_options_hash, merged_tags_hash)
   return if flavor.blank?
 
   case flavor
-  when 'xsmall';    merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '1', '512'
-  when 'small';     merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] ='1', '1024'
-  when 'medium';    merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '2', '2048'
-  when 'large';     merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '2', '4096'
-  when 'xlarge';    merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '4', '4096'
-  when 'xxlarge';   merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '4', '6144'
-  when 'xxxlarge';  merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '8', '8192'
+  #when 'xsmall';    merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '1', '512'
+  #when 'small';     merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] ='1', '1024'
+  when 'small';     merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] ='2', '4096'
+  #when 'medium';    merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '2', '2048'
+  when 'medium';    merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '4', '8192'
+  #when 'large';     merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '2', '4096'
+  when 'large';     merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '4', '16384'
+  #when 'xlarge';    merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '4', '4096'
+  #when 'xxlarge';   merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '4', '6144'
+  #when 'xxxlarge';  merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '8', '8192'
   else
     # merged_options_hash[:cores_per_socket], merged_options_hash[:vm_memory] = '1', '1024'
   end
@@ -311,7 +322,7 @@ def process_builds(dialog_options_hash, dialog_tags_hash)
     get_flavor(build, merged_options_hash, merged_tags_hash)
 
     # get retirement
-    get_retirement(build, merged_options_hash, merged_tags_hash)
+    #get_retirement(build, merged_options_hash, merged_tags_hash)
 
     # hard-code/override any options/tags
     get_extra_options(build, merged_options_hash, merged_tags_hash)
