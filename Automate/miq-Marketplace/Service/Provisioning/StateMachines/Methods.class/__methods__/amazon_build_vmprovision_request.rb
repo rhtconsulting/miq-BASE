@@ -560,7 +560,7 @@ begin
       get_sizing(build, matching_options_hash, matching_tags_hash)
 
       # get retirement
-      get_retirement(build, matching_options_hash, matching_tags_hash)
+      #get_retirement(build, matching_options_hash, matching_tags_hash)
 
       # hard code/override any options/tags
       get_extra_options(build, matching_options_hash, matching_tags_hash)

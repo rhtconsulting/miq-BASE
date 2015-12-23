@@ -332,7 +332,7 @@ def process_builds(dialog_options_hash, dialog_tags_hash)
     get_flavor(build, merged_options_hash, merged_tags_hash)
 
     # get retirement
-    get_retirement(build, merged_options_hash, merged_tags_hash)
+    #get_retirement(build, merged_options_hash, merged_tags_hash)
 
     # hard-code/override any options/tags
     get_extra_options(build, merged_options_hash, merged_tags_hash)
